@@ -39,8 +39,8 @@
             <div class="card">
                 <div class="card-content">
                     <h4 class="center-align grey-text">Registro de Usuarios</h4>
-                    <form id="myForm" onsubmit="showLoading()" action="" method="post">
-                        
+                    <form id="myForm" onsubmit="showLoading()" action="{{route('Ingresar')}}" method="post">
+                        @csrf
                         <div class="input-field">
                             <input id="dni" type="text" name="dni" required>
                             <label for="dni">DNI</label>
@@ -127,7 +127,7 @@
      </div>
  </div>
 <div class="container center-align">
-    <form action="../index.php" onsubmit="showLoading()" method="post">
+    <form action="{{route('principal')}}" onsubmit="showLoading()" method="get">
         <button class="btn-flat waves-effect">
             <i class="material-icons left">Inicio</i> 
         </button>
