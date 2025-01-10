@@ -7,15 +7,12 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return view('principal');
-});
+Route::get('/',[usuariosController::class, 'Index'])->name('principal');
 
-Route::get('/Login',function (){
-    // return 'formulario';
-});//IngresarU
-Route::get('/usuarios',function(){
-    // return view('formulario');
-    return "algo";
-});
-Route::get('/Mostrar',[usuariosController::class, 'MostrarU'])->name('Mostrar.mostrarU');
+Route::get('/Login', [usuariosController::class, 'Login_html'])->name('Login');;//IngresarU
+Route::get('/formularios',[usuariosController::class, 'Formulario'])->name('formulario');
+
+Route::post('/IngresarUsuarios',[usuariosController::class, 'IngresarU'])->name('Ingresar');
+Route::get('/MostrarUsuarios',[usuariosController::class, 'MostrarU'])->name('Mostrar');
+Route::post('/EditarUsuarios',[usuariosController::class, 'MostrarU'])->name('edit');
+// Route::get('/Usuarios--',[usuariosController::class, 'MostrarU'])->name('Mostrar');
