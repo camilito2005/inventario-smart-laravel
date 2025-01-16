@@ -1,58 +1,85 @@
-{{-- $mensaje = $_REQUEST["mensaje"];
-if (empty($mensaje)) {
-    $mensaje = "";
-} --}}
 @extends('layouts.app')
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
+@section('titulo', 'Inicio de Sesión')
+    @if (session('mensaje'))
+    @include('layouts.alert', [
+        'title' => session('type') == 'Danger' ? 'Error' : 'Info',
+        'message' => session('mensaje'),
+        'type' => session('type'),
+    ])
+@endif
 
-<head>
-{{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> --}}
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/d6ecbc133f.js" crossorigin="anonymous"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script> --}}
-<!--<link rel="stylesheet" href="../../css/cargando.css">-->
-{{-- <link rel="stylesheet" href="../css/login.css"> --}}
-<!--<script src="../js/cargando.js"></script>-->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inicia Sesión</title>
 <style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f0f2f5;
+    }
+    .login-container {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+    .login-card h2 {
+        font-weight: bold;
+        color: #1877f2;
+    }
+    .btn-primary {
+        background-color: #1877f2;
+        border-color: #1877f2;
+    }
+    .btn-primary:hover {
+        background-color: #145db2;
+        border-color: #145db2;
+    }
+    .link-recuperar {
+        display: block;
+        text-align: center;
+        margin-top: 1rem;
+        color: #1877f2;
+        text-decoration: none;
+    }
+    .link-recuperar:hover {
+        text-decoration: underline;
+    }
 </style>
-</head>
-
-<body>
-
-
-<!--<div id="loading">Cargando...</div>-->
-<p class="mensaje"></p>
-<div class="mx-auto contenedor">
-    <div class="formulario_registro">
-        <form id="myForm" class="mx-auto" action="./login.php?accion=login" onsubmit="showLoading()" method="post">
-            <h2 class="text-center text-secondary">Bienvenido</h2>
-            <p class="text-center text-secondary">Inicia sesión</p>
-            <input class="form-control" placeholder="Correo" required type="text" name="correo">
-            <br>
-            <input class="form-control" placeholder="Contraseña" required type="password" name="contraseña">
-            <br>
-            <input class="btn btn-primary" name="inicio" type="submit" value="Entrar">
-            <br>
-            <a class="link-recuperar" href="../vistas/usuarios.php?accion=recuperar">¿Olvidaste tu contraseña?</a>
-        </form>
+    <div class="login-container">
+        <div class="login-card">
+            <h2 class="text-center">Inicia Sesión</h2>
+            {{-- <p class="text-center text-secondary">Conéctate con tus datos</p> --}}
+            <form action="{{ route('Login') }}" method="post">
+                @csrf
+                <div class="mb-3">
+                    <input type="text" name="correo" class="form-control" placeholder="Correo Electrónico" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="contraseña" class="form-control" placeholder="Contraseña" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </div>
+            </form>
+            <a class="link-recuperar" href="{{ route('restablecer') }}">¿Olvidaste tu contraseña?</a>
+        </div>
     </div>
-</div>
-<form id="myForm" action="{{route('formulario')}}" onsubmit="showLoading()" method="get">
-    <button class="btn btn-outline-secondary" value="inicio">
-        <i class="fa-solid fa-user-plus"></i> Agregar usuarios
-    </button>
-</form>
-<form id="myForm" action="{{route('principal')}}" onsubmit="showLoading()" method="get">
-    <button class="btn btn-outline-secondary" value="inicio">
-        <i class="fa-solid fa-house"></i> Inicio
-    </button>
-</form>
+    <form id="myForm" action="{{route('formulario')}}" onsubmit="showLoading()" method="get">
+        <button class="btn btn-outline-secondary" value="inicio">
+            <i class="fa-solid fa-user-plus"></i> Agregar usuarios
+        </button>
+    </form>
+    <form id="myForm" action="{{route('principal')}}" onsubmit="showLoading()" method="get">
+        <button class="btn btn-outline-secondary" value="inicio">
+            <i class="fa-solid fa-house"></i> Inicio
+        </button>
+    </form>
 </body>
-
 </html>
 @endsection
