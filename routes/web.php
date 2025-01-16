@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dispositivos;
+use App\Http\Controllers\DispositivosController;
 use App\Http\Controllers\usuariosController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,10 +11,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[usuariosController::class, 'Index'])->name('principal');
 
-Route::get('/Login', [usuariosController::class, 'Login_html'])->name('Login');;//IngresarU
-Route::get('/formularios',[usuariosController::class, 'Formulario'])->name('formulario');
+Route::get('/login', [usuariosController::class, 'Login_html'])->name('Login_html');//IngresarU
 
-Route::post('/IngresarUsuarios',[usuariosController::class, 'IngresarU'])->name('Ingresar');
+Route::post('/Login', [usuariosController::class, 'Login'])->name('Login');
+
+Route::get('/formulario',[usuariosController::class, 'Formulario'])->name('formulario');
+
+Route::post('/IngresarUsuarios',[usuariosController::class, 'IngresarU'])->name('Usuarios.ingresar');
+
 Route::get('/MostrarUsuarios',[usuariosController::class, 'MostrarU'])->name('Mostrar');
-Route::post('/EditarUsuarios',[usuariosController::class, 'MostrarU'])->name('edit');
+
+Route::get('/EditarUsuarios/{id}',[usuariosController::class, 'EditarU'])->name('edit');
+
+Route::put('/usuarios/{id}', [usuariosController::class, 'ActualizarU'])->name('actualizar');
+
+Route::get('/RecuperarContraseña',[usuariosController::class, 'FormularioRestablecer'])->name('restablecer');
+
+Route::get('Equipos/formulario',[DispositivosController::class, 'Formulario'])->name('Formulario.dispositivos');
+
+Route::post('Equipos/Ingresar',[DispositivosController::class,'Ingresar'])->name('Ingresar.dispositivos');
+
+Route::get('Equipos/Mostrar',[DispositivosController::class, 'MostrarEquipos'])->name('Mostrar');
+// Route::get('IngresarEquipos',[DispositivosController::class, '']->name('formulario.dispositivos') );
 // Route::get('/Usuarios--',[usuariosController::class, 'MostrarU'])->name('Mostrar');
