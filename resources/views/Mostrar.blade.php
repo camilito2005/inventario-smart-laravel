@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Gestión de Usuarios</title>
-</head>
-<body>
+@extends('layouts.app')
+@section('content')
+@section('titulo', 'Gestión de Usuarios')
+    @if (session('mensaje'))
+    @include('layouts.alert', [
+        'title' => session('type') == 'Danger' ? 'Error' : 'Info',
+        'message' => session('mensaje'),
+        'type' => session('type'),
+    ])
+@endif
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="text-secondary">Gestión de Usuarios</h3>
@@ -15,7 +16,6 @@
                 <a href="" class="btn btn-danger btn-sm">Cerrar sesión</a>
             </div>
         </div>
-
         <div class="my-4">
             <h5 class="text-secondary">Filtrar por cargo:</h5>
             <form method="get" action="{{ route('Mostrar') }}">
@@ -29,11 +29,9 @@
                 </select>
             </form>
         </div>
-
         @if($mensaje)
             <p class="alert alert-info">{{ $mensaje }}</p>
         @endif
-
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle text-center">
                 <thead class="table-light">
@@ -62,7 +60,7 @@
                             <td>{{ $usuario->rol }}</td>
                             <td>
                                 <a href="{{ route('edit', $usuario->id) }}" class="btn btn-sm btn-primary">Modificar</a>
-                                <form method="POST" action="" style="display: inline-block;">
+                                <form method="post" action="" style="display: inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</button>
@@ -97,4 +95,4 @@
         </div>
     </div>
 </body>
-</html>
+@endsection 
