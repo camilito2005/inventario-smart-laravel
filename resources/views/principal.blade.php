@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('content')
+{{-- @extends('layouts.app')
+@section('content') --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +8,8 @@
     <title>Inventario SmartInfo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body>  
+    @include('layouts.menu')
     <header class="bg-light text-center py-5">
         <div class="container">
             <h1 class="display-4">Bienvenido al Inventario SmartInfo</h1>
@@ -16,7 +17,6 @@
             <a href="" class="btn btn-primary btn-lg">Explorar Inventario</a>
         </div>
     </header>
-
     <div class="container my-5">
         <div class="row">
             <!-- Productos -->
@@ -97,12 +97,9 @@
             </div>
         </div>
     </div>
-
-    {{-- <footer class="bg-primary text-white text-center py-3">
-        <p class="mb-0">&copy; 2024 Inventario SmartInfo. Todos los derechos reservados.</p>
-    </footer> --}}
-
-    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+    
+    @include('layouts.footer')
 </body>
 </html>
-@endsection
+{{-- 
+@endsection --}}
