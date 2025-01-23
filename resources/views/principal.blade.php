@@ -1,15 +1,5 @@
-{{-- @extends('layouts.app')
-@section('content') --}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario SmartInfo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>  
-    @include('layouts.menu')
+@extends('layouts.app')
+@section('content')
     <header class="bg-light text-center py-5">
         <div class="container">
             <h1 class="display-4">Bienvenido al Inventario SmartInfo</h1>
@@ -25,7 +15,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Productos</h5>
                         <p class="card-text">Añade, edita o elimina productos de tu inventario.</p>
-                        <a href="#" class="btn btn-primary">Gestionar</a>
+                        <a href="{{route('Mostrar.dispositivos')}}" class="btn btn-primary">Gestionar</a>
                     </div>
                 </div>
             </div>
@@ -99,7 +89,5 @@
     </div>
     
     @include('layouts.footer')
-</body>
-</html>
-{{-- 
-@endsection --}}
+
+@endsection
