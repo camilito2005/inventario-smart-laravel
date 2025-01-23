@@ -13,6 +13,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+    // Relación con el modelo Roles
+    public function rol()
+    {
+        return $this->belongsTo(Roles::class, 'rol_id');
+    }
+}
 
 class Roles extends Model
 {
