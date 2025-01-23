@@ -1,0 +1,41 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+}
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+.login-card h2 {
+    font-weight: bold;
+    color: #1877f2;
+}
+.btn-primary {
+    background-color: #1877f2;
+    border-color: #1877f2;
+}
+.btn-primary:hover {
+    background-color: #145db2;
+    border-color: #145db2;
+}
+.link-recuperar {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    color: #1877f2;
+    text-decoration: none;
+}
+.link-recuperar:hover {
+    text-decoration: underline;
+}
