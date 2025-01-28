@@ -1,5 +1,7 @@
 @extends('layouts.app')
+
 @section('content')
+
 @if (session('mensaje'))
 
 @include('layouts.alert', [
@@ -23,16 +25,20 @@
             <table class="table table-bordered table-hover align-middle text-center">
                 <thead class="table-light">
                     <tr>
-                        <th>ID</th>
+                        {{-- <th>ID</th> --}}
                         <th>Nombre</th>
+                        @if(session('nombre') && session('descripcion') == 'administrador')
                         <th>Acciones</th>
+                        @else
+                        @endif
                     </tr>
                 </thead>
                 <tbody id="resultados-equipos">
                     @forelse ($categorias as $category)
                         <tr>
-                            <td>{{ $category->categoria_id }}</td>
+                            {{-- <td>{{ $category->categoria_id }}</td> --}}
                             <td>{{ $category->nombre }}</td>
+                            @if(session('nombre') && session('descripcion') == 'administrador')
                                 <td>
                                     <a href="{{ route('Categorias.formularioeditar' ,$category->categoria_id) }}" class="btn btn-sm btn-primary">Modificar</a>
                                     <form action="{{ route('Categorias.eliminar',$category->categoria_id) }}" method="POST" style="display: inline-block;">
@@ -41,6 +47,9 @@
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar esta categoría?')">Eliminar</button>
                                     </form>
                                 </td>
+                            @else
+
+                            @endif  
                         </tr>
                     @empty
                         <tr>
@@ -53,8 +62,11 @@
 
         <!-- Botones de navegación -->
         <div class="text-center my-4">
+            @if(session('nombre') && session('descripcion') == 'administrador')
                 <a href="{{ route('Formulario.categorias') }}" class="btn btn-outline-secondary">Agregar Categoría</a>
-            <a href="{{ route('principal') }}" class="btn btn-outline-secondary">Volver al inicio</a>
+            @else
+            @endif
+                <a href="{{ route('principal') }}" class="btn btn-outline-secondary">Volver al inicio</a>
         </div>
     </div>
 
