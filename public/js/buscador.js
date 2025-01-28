@@ -18,14 +18,20 @@ $(document).ready(function() {
                             if (role === 'administrador') {
                                 cargo = `<td>${task.cargo}</td>`;
                                                 acciones = `
-                                                <td>
-                                                    <a href='equipos.php?accion=modificar&id=${task.id}'>
-                                                        <i class='fa-solid fa-pen'></i> Modificar
+                                                  <td>
+                                                    <a href="${routeFormularioEditar.replace(':id', task.id)}">
+                                                        <i class="fa-solid fa-pen"></i> Modificar
                                                     </a>
-                                                    <a href='equipos.php?accion=eliminar&id=${task.id}' onclick='return pregunta()'>
-                                                        <i class='fa-solid fa-trash'></i> Eliminar
-                                                    </a>
-                                                    </td>
+                                                
+                                                        <form action="${routeEliminar.replace(':id', task.id)}" method="POST" onsubmit="return pregunta()">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <input type="hidden" name="_token" value="${csrfToken}">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fa-solid fa-trash"></i> Eliminar
+                                                            </button>
+                                                        </form>
+                                                    
+                                                </td>
                                                 `;
                             }
                             else if(role === 'usuario'){
@@ -62,3 +68,6 @@ $(document).ready(function() {
         }
     });
 });
+function pregunta() {
+    return confirm('¿Estás seguro de que deseas eliminar este equipo?');
+}
