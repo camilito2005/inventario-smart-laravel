@@ -1,0 +1,16 @@
+/* Estilos personalizados para los submenús */
+.dropdown:hover .dropdown-menu {
+    display: block; /* Mostrar submenú al pasar el mouse */
+    margin-top: 0; /* Ajustar posición */
+}
+.dropdown-menu {
+    border-radius: 0.5rem; /* Bordes redondeados */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.navbar-nav .nav-link:hover {
+    color: #FFD700; /* Color dorado al pasar el mouse */
+}
