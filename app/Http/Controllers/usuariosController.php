@@ -90,9 +90,6 @@ class usuariosController extends Controller
                 'type' => 'Warning',
             ]);
         }
-        // if (!session()->has('nombre')) {
-        //     return redirect()->route('Login_html')->with('mensaje', 'Inicia sesión para continuar');
-        // }
 
         $mensaje = $request->input('mensaje', '');
         $usuario_actual = session('nombre');
@@ -252,6 +249,7 @@ public function Logout(Request $request)
 }
 public function mostrarPerfil()
 {
+
     $id = session('id');
     $nombre = session('nombre');
     $dni = session('dni');
@@ -261,25 +259,23 @@ public function mostrarPerfil()
     $correo = session('correo');
     $contraseña = session('contraseña');
     $rol = session('descripcion');
+    $cargo = session('rol_id');
 
 
     $cargos = DB::table('roles')->get();
 
     if ($nombre) {
         // Obtener el rol asociado al usuario desde la tabla `roles`
-        return view('usuarios/perfil', compact('id', 'dni', 'nombre', 'apellido', 'telefono', 'direccion', 'correo', 'contraseña', 'rol','cargos'));
+        return view('usuarios/perfil', compact('id', 'dni', 'nombre', 'apellido', 'telefono', 'direccion', 'correo', 'contraseña', 'rol','cargos','cargo'));
     }
     else {
         return redirect()->route('Login_html')->with('mensaje', 'Inicia sesión para continuar.');
     }
 }
-public function ActualizarPerfil(Request $request)
+public function ActualizarPerfil(Request $request , $id)
 {
-    // Obtener el ID del usuario autenticado
-    $id = Auth::id();
-
     // Validación
-    $request->validate([
+    $validator = Validator::make($request->all(), [
         'nombre' => 'required|string|max:255',
         'apellido' => 'required|string|max:255',
         'telefono' => 'required|numeric',
@@ -294,22 +290,43 @@ public function ActualizarPerfil(Request $request)
         'cargo' => 'required|exists:roles,id',
     ]);
 
-    // Buscar usuario y actualizar datos
-    $usuario = Usuarios::findOrFail($id);
-    $usuario->update([
+    if ($validator->fails()) {
+        // Redirigir de vuelta con los errores
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput(); // Mantener los datos ingresados
+    }
+    // Preparar datos para la actualización
+    $datos = [
         'nombre' => $request->nombre,
         'apellido' => $request->apellido,
         'telefono' => $request->telefono,
         'direccion' => $request->direccion,
         'correo' => $request->correo,
-        'contraseña' => $request->contraseña ? bcrypt($request->contraseña) : $usuario->contraseña,
         'rol_id' => $request->cargo,
-    ]);
+    ];
 
-    if ($usuario) {
-        return redirect()->route('Mostrar')->with(['mensaje' => 'Perfil actualizado exitosamente.', 'type' => 'info' , 'title' => 'actualizacion de perfil']);
+    // Si hay una nueva contraseña, incluirla en los datos
+    if (!empty($request->contraseña)) {
+        $datos['contraseña'] = bcrypt($request->contraseña);
+    }
+
+    // Actualizar el usuario en la base de datos usando DB
+    $actualizado = DB::table('usuarios')
+        ->where('id', $id)
+        ->update($datos);
+
+    // Redirigir con el mensaje correspondiente
+    if ($actualizado) {
+        $usuario = DB::table('usuarios')->where('id',$id)->first();
+        session([
+            'usuario'=>$usuario,
+        ]);
+        
+        // dd(session('usuario')->id,session('usuario')->nombre,session('usuario')->telefono,session('usuario')->apellido,session('usuario')->direccion,session('usuario')->correo,session('usuario')->rol_id,);
+        return redirect()->route('perfildeusuarios')->with(['mensaje' => 'Perfil actualizado exitosamente.', 'type' => 'success','nombre' => session('usuario')->nombre]);
     } else {
-        return redirect()->route('perfildeusuarios')->with(['mensaje' => 'Hubo un error al actualizar el perfil. Intenta nuevamente.', 'type' => 'danger' , 'title' => 'error al modificar']);
+        return redirect()->route('Mostrar')->with(['mensaje' => 'Hubo un error al actualizar el perfil. Intenta nuevamente.', 'type' => 'danger']);
     }
 }
 public function requestReset(Request $request)
@@ -400,5 +417,32 @@ public function requestReset(Request $request)
             # code...
         }
 
+    }
+        public function buscar(Request $request){
+        $search = $request->input('search');
+
+        if (!empty($search)) {
+            $usuarios = DB::table('usuarios')
+                ->join('roles', 'usuarios.rol_id', '=', 'roles.id')
+                ->select(
+                    'usuarios.id',
+                    'usuarios.dni',
+                    'usuarios.nombre',
+                    'usuarios.apellido',
+                    'usuarios.telefono',
+                    'usuarios.direccion',
+                    'usuarios.correo',
+                    'usuarios.contraseña as contraseña',
+                    'roles.descripcion as cargo'
+                )
+                ->where('usuarios.nombre', 'ILIKE', '%' . $search . '%')
+                ->get();
+
+            // Retornar los resultados como JSON
+            return response()->json($usuarios);
+        }
+
+        // Retornar un array vacío si no hay búsqueda
+        return response()->json([]);
     }
 }
