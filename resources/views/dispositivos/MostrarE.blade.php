@@ -3,6 +3,9 @@
 Gestion de dispositivos
 @endsection
 @section('content')
+@push('estilos')
+<link rel="stylesheet" href="{{asset('css/paginacion.css')}}">
+@endpush
 @if (session('mensaje'))
     @include('layouts.alert', [
         'title' => session('type') == 'Danger' ? 'Error' : 'Info',
@@ -61,7 +64,7 @@ Gestion de dispositivos
         <table class="table table-bordered table-hover align-middle text-center">
             <thead class="table-light">
                 <tr>
-                    <th>ID</th>
+                    {{-- <th>ID</th> --}}
                     <th>Nombre</th>
                     <th>Marca</th>
                     <th>Modelo</th>
@@ -82,7 +85,7 @@ Gestion de dispositivos
             <tbody id="resultados-equipos">
                 @forelse ($equipos as $equipo)
                     <tr>
-                        <td>{{ $equipo->id }}</td>
+                        {{-- <td>{{ $equipo->id }}</td> --}}
                         <td>{{ $equipo->nombre }}</td>
                         <td>{{ $equipo->marca }}</td>
                         <td>{{ $equipo->modelo }}</td>
@@ -124,11 +127,15 @@ Gestion de dispositivos
         </table>
 
     </div>
+    @if (session('nombre') && session('descripcion') === "administrador")
     <form  action="{{route('Formulario.dispositivos')}}" method="get">
         <button class="btn btn-outline-secondary" value="inicio">
             <i class="fa-solid fa-user-plus"></i> Agregar equipos
         </button>
     </form>
+    @else
+    
+    @endif
     <form action="{{route('principal')}}" method="get">
         <button class="btn btn-outline-secondary" value="inicio">
             <i class="fa-solid fa-house"></i> Inicio
@@ -136,12 +143,18 @@ Gestion de dispositivos
     </form>
 
     <!-- Paginación -->
-    {{ $equipos->links() }}
+    <div class="custom-pagination">
+        {{ $equipos->links() }}
+    </div>
+
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     const urlBuscar = "{{ route('dispositivos.buscar') }}";
+    const routeFormularioEditar = "{{ route('FormularioEditar.dispositivos', ':id') }}";
+    const routeEliminar = "{{ route('dispositivos.eliminar', ':id') }}";
+    const csrfToken = "{{ csrf_token() }}";
 </script>
 <script src="{{ asset('js/buscador.js') }}"></script>
 
