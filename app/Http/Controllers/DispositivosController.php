@@ -100,7 +100,9 @@ class DispositivosController extends Controller
         }
 
         // Paginación
-        $equipos = $query->paginate($registrosPorPagina);
+        // $equipos = $query->paginate($registrosPorPagina);
+        $equipos = $query->paginate($registrosPorPagina)->appends(['categoria' => $filtroCategorias]);
+
 
         return view('dispositivos/MostrarE', compact('mensaje', 'categorias', 'equipos', 'filtroCategorias'));
     }
