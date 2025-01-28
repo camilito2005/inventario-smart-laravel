@@ -1,0 +1,36 @@
+.custom-pagination nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.custom-pagination .page-item {
+    margin: 0 5px;
+}
+
+.custom-pagination .page-link {
+    color: #007bff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    transition: all 0.3s;
+}
+
+.custom-pagination .page-link:hover {
+    background-color: #f8f9fa;
+    text-decoration: none;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    color: #6c757d;
+}
+.page-item:first-child,
+.page-item:last-child {
+    display: none;
+}
