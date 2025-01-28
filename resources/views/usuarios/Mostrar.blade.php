@@ -20,23 +20,36 @@
                         <i class="fa-solid fa-house"></i> Cerrar Sesión
                     </button>
                 </form>
-                {{-- <a href="{{route('cerrar')}}" >Cerrar sesión</a> --}}
             </div>
             @endif
         </div>
         <div class="my-4">
-            <h5 class="text-secondary">Filtrar por cargo:</h5>
-            <form method="get" action="{{ route('Mostrar') }}">
-                <select name="cargo" class="form-select w-50 d-inline" onchange="this.form.submit()">
-                    <option value="">Todos los cargos</option>
-                    @foreach ($roles as $rol)
-                        <option value="{{ $rol->id }}" {{ $filtroCargo == $rol->id ? 'selected' : '' }}>
-                            {{ $rol->descripcion }}
-                        </option>
-                    @endforeach
-                </select>
-            </form>
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Input de búsqueda -->
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="search" id="search" class="form-control" placeholder="Buscar...">
+                    </div>
+                </div>
+                
+                <!-- Filtrar por cargo -->
+                <div class="ms-3">
+                    <h5 class="text-secondary mb-1">Filtrar por cargo:</h5>
+                    <form method="get" action="{{ route('Mostrar') }}">
+                        <input type="hidden" id="role" value="{{session('descripcion')}}">
+                        <select name="cargo" class="form-select" onchange="this.form.submit()">
+                            <option value="">Todos los cargos</option>
+                            @foreach ($roles as $rol)
+                                <option value="{{ $rol->id }}" {{ $filtroCargo == $rol->id ? 'selected' : '' }}>
+                                    {{ $rol->descripcion }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
+            </div>
         </div>
+        
         @if($mensaje)
             <p class="alert alert-info">{{ $mensaje }}</p>
         @endif
@@ -44,7 +57,7 @@
             <table class="table table-bordered table-hover align-middle text-center">
                 <thead class="table-light">
                     <tr>
-                        <th>ID</th>
+                        {{-- <th>ID</th> --}}
                         <th>DNI</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
@@ -58,10 +71,10 @@
                         @endif
                     </tr>
                 </thead>
-                <tbody id="resultados-equipos">
+                <tbody id="resultados-usuarios">
                     @forelse ($usuarios as $usuario)
                         <tr>
-                            <td>{{ $usuario->id }}</td>
+                            {{-- <td>{{ $usuario->id }}</td> --}}
                             <td>{{ $usuario->dni }}</td>
                             <td>{{ $usuario->nombre }}</td>
                             <td>{{ $usuario->apellido }}</td>
@@ -94,7 +107,7 @@
             <ul class="pagination justify-content-center">
                 @for ($i = 1; $i <= $totalPaginas; $i++)
                     <li class="page-item {{ $i == $paginaActual ? 'active' : '' }}">
-                        <a class="page-link" href="">{{ $i }}</a>
+                        <a class="page-link" href="{{ route('Mostrar', ['pagina' => $i, 'cargo' => $filtroCargo]) }}">{{ $i }}</a>
                     </li>
                 @endfor
             </ul>
@@ -109,7 +122,13 @@
         </div>
     </div>
 
-    <link rel="stylesheet" href="{{ asset('css/tu-archivo.css') }}">
-
-</body>
+    {{-- <link rel="stylesheet" href="{{ asset('css/tu-archivo.css') }}"> --}}
+    @push('scripts')
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="{{asset('js/BuscadorUsuarios.js')}}"></script>
+<script>
+    const urlBuscar = "{{ route('usuarios.buscar') }}";
+</script>
+    @endpush
 @endsection 
