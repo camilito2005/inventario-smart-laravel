@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\DispositivosController;
+use App\Http\Controllers\EstadisticasController;
 use App\Http\Controllers\usuariosController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,7 @@ Route::get('/formulario',[usuariosController::class, 'Formulario'])->name('formu
 
 Route::get('/perfil',[usuariosController::class,'mostrarPerfil'])->name('perfildeusuarios');
 
-Route::put('/perfil/actualizar',[usuariosController::class,'ActualizarPerfil'])->name('actualizar.perfil');
+Route::put('/perfil/actualizar/{id}', [usuariosController::class, 'ActualizarPerfil'])->name('actualizar.perfil');
 
 Route::put('/IngresarUsuarios',[usuariosController::class, 'Guardar'])->name('Usuarios.ingresar');
 
@@ -38,6 +39,8 @@ Route::post('/usuarios/RecuperarContraseña',[usuariosController::class, 'reques
 Route::get('/usuarios/reset/{token}', [usuariosController::class, 'resetForm'])->name('reset.form');
 
 Route::post('/usuarios/reset', [usuariosController::class, 'resetPassword'])->name('update');
+
+Route::post('/usuarios/buscar', [usuariosController::class, 'buscar'])->name('usuarios.buscar');
 
 Route::post('/cerrarsesion',[usuariosController::class, 'Logout'])->name('cerrar');
 
@@ -72,3 +75,13 @@ Route::post('Equipos/ExportarPdf',[DispositivosController::class, 'generarPDF'])
 Route::post('Equipos/ExportarExcel',[DispositivosController::class, 'generarExcel'])->name('dispositivos.excel');
 
 Route::get('Equipos/buscar',[DispositivosController::class, 'buscar'])->name('dispositivos.buscar');
+
+Route::get('/estadisticas', [EstadisticasController::class, 'index'])->name('estadisticas');
+
+Route::get('/Estadisticas/masventas', [EstadisticasController::class , 'masVentas'])->name('estadisticas.masventas');
+
+Route::get('Estadisticas/equipospormarca', [EstadisticasController::class , 'equiposPorMarca'])->name('estadisticas.equiposxmarcas');
+
+Route::post('Estadisticas/equipospormarca/excel', [EstadisticasController::class, 'exportarEquiposPorMarca'])->name('estadisticas.excel');
+
+Route::post('Estadisticas/equipospormarca/pdf', [EstadisticasController::class, 'pdf'])->name('estadisticas.pdf');
